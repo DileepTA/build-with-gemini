@@ -203,7 +203,6 @@
   .sidebar a.active.section-color-2 { background: var(--color-warning-container); color: var(--color-on-warning-container); }
   .sidebar a.active.section-color-3 { background: var(--color-tertiary-container); color: var(--color-on-tertiary-container); }
   .sidebar-footer { padding: .875rem 1.25rem; border-top: 1px solid var(--color-outline-variant); font-size: .7rem; color: var(--color-on-surface-variant); }
-  .reload-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background: var(--color-tertiary); margin-right:.4rem; vertical-align:middle; transition:opacity .3s; }
 
   .main { margin-left: 280px; }
 
@@ -356,7 +355,7 @@
   </div>
   <nav id="toc"></nav>
   <div class="sidebar-footer">
-    <div><span class="reload-dot" id="dot"></span><span id="footer-status">Live preview · auto-reloads</span></div>
+    <div>Build with Gemini · Track 3</div>
   </div>
 </aside>
 
@@ -1042,8 +1041,6 @@ Congratulations! You've designed, built, equipped, evaluated, deployed, shared, 
 
 </script>
 <script>
-  const MD_PATH = "../Gemini World 3 QwikLab 2.0.md";
-
   // Google Docs export escapes punctuation with backslashes (\`, \[, \!, \<, ...).
   // Strip those so markdown renders cleanly.
   function unescapeGdocs(src) {
@@ -1058,8 +1055,6 @@ Congratulations! You've designed, built, equipped, evaluated, deployed, shared, 
   function cleanLabel(text) {
     return text.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").trim();
   }
-
-  let lastRaw = null;
 
   function render(raw) {
     const cleaned = unescapeGdocs(raw);
@@ -1161,33 +1156,6 @@ Congratulations! You've designed, built, equipped, evaluated, deployed, shared, 
     onScroll();
   }
 
-  async function load(initial) {
-    try {
-      const res = await fetch(encodeURI(MD_PATH) + "?t=" + Date.now(), { cache: "no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const raw = await res.text();
-      if (raw !== lastRaw) {
-        const y = window.scrollY;
-        lastRaw = raw;
-        render(raw);
-        if (!initial) window.scrollTo(0, y); // preserve scroll on live reload
-        blinkDot();
-      }
-    } catch (e) {
-      if (initial) {
-        document.getElementById("content").innerHTML =
-          '<div id="status">Could not load the markdown.<br><br><code>' + e.message +
-          '</code><br><br>Make sure the dev server is running from the project root.</div>';
-      }
-    }
-  }
-
-  function blinkDot() {
-    const dot = document.getElementById("dot");
-    dot.style.opacity = "0.2";
-    setTimeout(() => (dot.style.opacity = "1"), 250);
-  }
-
   // Light/dark theme toggle (persisted; initial value set in the head script)
   const themeToggle = document.getElementById("theme-toggle");
   const themeIcon = document.getElementById("theme-icon");
@@ -1206,15 +1174,13 @@ Congratulations! You've designed, built, equipped, evaluated, deployed, shared, 
     });
   }
 
-  // Inline markdown (built/hosted single file) vs. live fetch (local dev)
-  const inlineEl = document.getElementById("md-inline");
-  const inlineMd = inlineEl ? inlineEl.textContent.trim() : "";
+  // build.py inlines the markdown here. This template on its own has none.
+  const inlineMd = document.getElementById("md-inline").textContent.trim();
   if (inlineMd) {
-    document.getElementById("footer-status").textContent = "Build with Gemini · Track 3";
     render(inlineMd);
   } else {
-    load(true);
-    setInterval(() => load(false), 1500); // live reload: poll every 1.5s
+    document.getElementById("status").textContent =
+      "This is the template. Run python3 site/build.py and open the built index.html or gsi.html.";
   }
 </script>
 </body>

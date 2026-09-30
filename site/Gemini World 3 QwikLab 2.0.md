@@ -81,6 +81,14 @@ You should end up with several skills specific to this lab, plus two MCP servers
 - **[Developer Knowledge MCP](https://codelabs.developers.google.com/developer-knowledge-mcp-antigravity)** — gives AGY **grounded, current knowledge of Google's official docs** (Google Cloud, Firebase, ADK, and the Agent Platform products you'll use later) instead of guessing commands, which keeps the later modules out of trial-and-error spirals.
 - **[Firebase MCP](https://firebase.google.com/docs/ai-assistance/mcp-server)** — lets AGY work directly with Firebase services like Firestore, which you'll use for persistent storage.
 
+We're almost ready to start building, but first, let's check to make sure everything is set up correctly. Tell Antigravity to:
+
+```
+Verify my setup.
+```
+
+This invokes the `troubleshoot-lab-setup` skill we downloaded earlier from GitHub to confirm your environment is set up correctly. If anything is misconfigured, Antigravity should be able to resolve it on its own, or give you instructions to fix the setup.
+
 Your setup is complete — let's start building! 🎊
 
 # Build Your First Agent
